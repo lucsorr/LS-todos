@@ -30,6 +30,27 @@ configure do
   set :erb, :escape_html => true
 end
 
+helpers do
+  def find_list(id)
+    session[:lists].find { |list| list[:id] == id }
+  end
+  
+  def all_todos_completed?(list)
+    list[:todos].all? { |todo| todo[:completed] }
+  end
+  
+  def completed_todos(list)
+    list[:todos].count { |todo| todo[:completed] }
+  end
+
+  def new_id(item)
+    if item.empty? then START_ID
+    else
+      (item.last[:id].to_i + 1).to_s
+    end
+  end
+end
+
 before do
   session[:lists] ||= []
 end
