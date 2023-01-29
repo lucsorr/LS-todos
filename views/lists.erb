@@ -1,0 +1,31 @@
+<% content_for :main_header_links do %>
+  <a class="add" href="/lists/new">New List</a>
+<% end %>
+
+<% if session[:success] %>
+  <div class="flash success">
+    <p><%= session.delete :success %></p>
+  </div>
+<% end %>
+
+<% if @lists.empty? %>
+  <h2>There are no lists yet!</h2>
+<% end %>
+
+<ul id="lists">
+  <% @lists.each do |list| %>
+    <li class="<%= (list[:todos].empty? || !all_todos_completed?(list)) ? '' : 'complete' %>">
+
+      <a>
+        <h2> <a href="/lists/<%= list[:id].to_s %>"><%= list[:name] %></a></h2>
+        <% if list[:todos].empty? %>
+          <p><%= '0' %></p>
+        <% elsif all_todos_completed?(list) %>
+          <p><%= "#{list[:todos].size}/#{list[:todos].size}" %></p>
+        <% else %>
+          <p><%= "#{completed_todos(list)}/#{list[:todos].size}" %></p>
+        <% end %>
+      </a>
+    </li>
+  <% end %>
+</ul>
