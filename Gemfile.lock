@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    erubis (2.7.0)
     multi_json (1.15.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
@@ -28,9 +29,11 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  erubis
   puma
   sinatra (~> 3.0.5)
   sinatra-contrib
+  tilt
 
 RUBY VERSION
    ruby 2.7.5p203

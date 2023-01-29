@@ -14,11 +14,9 @@
 
 <ul id="lists">
   <% @lists.each do |list| %>
-    <li class="<%= (list[:todos].empty? || !all_todos_completed?(list)) ? '' : 'complete' %>">
-
-      <a>
-        <h2><a href="/lists/<%= list[:id] %>"><%= list[:name] %></a></h2>
-        <p><%= todos_stats(list) %></p>
+    <li class="<%= (list[:todos].empty? || !all_todos_completed?(list)) ? '' : 'complete' %>">      <a>
+      <h2><a href="/lists/<%= list[:id] %>"><%= list[:name] %></a></h2>
+      <p><%= todos_stats(list) %></p>
       </a>
     </li>
   <% end %>
