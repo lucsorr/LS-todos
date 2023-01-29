@@ -49,6 +49,14 @@ helpers do
       (item.last[:id].to_i + 1).to_s
     end
   end
+
+  def todos_stats(list)
+    if list[:todos].empty? then '0'
+    elsif all_todos_completed?(list) then "#{list[:todos].size}/#{list[:todos].size}"
+    else
+      "#{completed_todos(list)}/#{list[:todos].size}"
+    end
+  end
 end
 
 before do

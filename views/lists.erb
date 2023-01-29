@@ -17,14 +17,8 @@
     <li class="<%= (list[:todos].empty? || !all_todos_completed?(list)) ? '' : 'complete' %>">
 
       <a>
-        <h2> <a href="/lists/<%= list[:id] %>"><%= list[:name] %></a></h2>
-        <% if list[:todos].empty? %>
-          <p><%= '0' %></p>
-        <% elsif all_todos_completed?(list) %>
-          <p><%= "#{list[:todos].size}/#{list[:todos].size}" %></p>
-        <% else %>
-          <p><%= "#{completed_todos(list)}/#{list[:todos].size}" %></p>
-        <% end %>
+        <h2><a href="/lists/<%= list[:id] %>"><%= list[:name] %></a></h2>
+        <p><%= todos_stats(list) %></p>
       </a>
     </li>
   <% end %>
