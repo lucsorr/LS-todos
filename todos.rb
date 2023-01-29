@@ -7,18 +7,18 @@ require_relative 'validation_helpers'
 
 SESSION_SECRET = '4ddd6082ade9e381c556063b42592b07d2777019fadb792c83eae8a0f3c47cf1'.freeze
 
-START_ID = '0'.freeze
-ERROR_NO_LIST = 'The list could not be found.'.freeze
-ERROR_INVALID_LIST = 'The list name must be between 1 and 100 characters.'.freeze
-ERROR_INVALID_TODO = 'The todo name must be between 1 and 100 characters.'.freeze
-ERROR_EXISTING_NAME = "There\'s already a list with that name.".freeze
-SUCCESS_MESSAGE = 'The list has been created.'.freeze
-SUCCESS_UPDATE = 'The list has been updated.'.freeze
-SUCCESS_TODO = 'The todo was added.'.freeze
-SUCCESS_UPDATE_TODO = 'The todo has been updated.'.freeze
-SUCCESS_COMPLETED_TODOS = 'All todos have been completed.'.freeze
-SUCCESS_DELETED_TODO = 'The todo has been deleted.'.freeze
-SUCCESS_DELETED_LIST = 'The list has been deleted.'.freeze
+START_ID ||= '0'.freeze
+ERROR_NO_LIST ||= 'The list could not be found.'.freeze
+ERROR_INVALID_LIST ||= 'The list name must be between 1 and 100 characters.'.freeze
+ERROR_INVALID_TODO ||= 'The todo name must be between 1 and 100 characters.'.freeze
+ERROR_EXISTING_NAME ||= "There\'s already a list with that name.".freeze
+SUCCESS_MESSAGE ||= 'The list has been created.'.freeze
+SUCCESS_UPDATE ||= 'The list has been updated.'.freeze
+SUCCESS_TODO ||= 'The todo was added.'.freeze
+SUCCESS_UPDATE_TODO ||= 'The todo has been updated.'.freeze
+SUCCESS_COMPLETED_TODOS ||= 'All todos have been completed.'.freeze
+SUCCESS_DELETED_TODO ||= 'The todo has been deleted.'.freeze
+SUCCESS_DELETED_LIST ||= 'The list has been deleted.'.freeze
 
 configure do
   enable :sessions
@@ -86,7 +86,7 @@ post '/lists' do
 
   validity = check(list_name)
   if validity == :valid
-    session[:lists] << { name: list_name, id: new_id(session[:lists]), todos: [] }
+    session[:lists] << { name: list_name, id: SecureRandom.hex(4), todos: [] }
     session[:success] = SUCCESS_MESSAGE
     redirect '/lists'
   else
@@ -155,7 +155,7 @@ post '/lists/:id/todos' do |id|
   @id = id
   todo_name = params[:todo_name]
   if valid_todo? todo_name
-    @list[:todos] << { id: new_id(@list[:todos]), name: todo_name, completed: false }
+    @list[:todos] << { name: todo_name, id: SecureRandom.hex(4),  completed: false }
     session[:success] = SUCCESS_TODO
 
     redirect "/lists/#{id}"
@@ -200,11 +200,15 @@ post '/lists/:list_id/todos/:todo_id/delete' do |list_id, todo_id|
   end
 
   list[:todos].delete_if { |todo| todo[:id] == todo_id }
-  session[:success] = SUCCESS_DELETED_TODO
-  redirect "/lists/#{list_id}"
+  if env["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"
+    status 204
+  else
+    session[:success] = SUCCESS_DELETED_TODO
+    redirect "/lists/#{list_id}"
+  end
 end
 
-# Delete list:
+# Delete a list:
 post '/lists/:id/delete' do |id|
   unless valid_id? id
     session[:error] = ERROR_NO_LIST
@@ -212,6 +216,10 @@ post '/lists/:id/delete' do |id|
   end
 
   session[:lists].delete_if { |list| list[:id] == id }
-  session[:success] = SUCCESS_DELETED_LIST
-  redirect '/lists'
+  if env["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest"
+    "/lists"
+  else
+    session[:success] = SUCCESS_DELETED_LIST
+    redirect '/lists'
+  end
 end
