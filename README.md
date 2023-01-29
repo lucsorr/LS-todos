@@ -3,6 +3,6 @@ This repository contains a web-based personal task manager using Sinatra for the
 
 This app is currently deployed at:
 
-https://lucsorr-ls-todos.up.railway.app/lists
+https://lucsorr-ls-todos.up.railway.app/
 
 Lucas Sorribes, January 2023.
