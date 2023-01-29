@@ -44,10 +44,7 @@ helpers do
   end
 
   def new_id(item)
-    if item.empty? then START_ID
-    else
-      (item.last[:id].to_i + 1).to_s
-    end
+    item.empty? ? START_ID : (item.last[:id].to_i + 1).to_s
   end
 
   def todos_stats(list)
