@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'sinatra/content_for'
-require 'tilt/erubis'
 require 'securerandom'
 
 SESSION_SECRET = '4ddd6082ade9e381c556063b42592b07d2777019fadb792c83eae8a0f3c47cf1'.freeze
@@ -208,12 +207,13 @@ end
 
 # Delete todo from a list:
 post '/lists/:list_id/todos/:todo_id/delete' do |list_id, todo_id|
+  list = find_list(list_id)
+
   unless valid_id?(list_id) && valid_todo_id?(list, todo_id)
     session[:error] = ERROR_NO_LIST
     redirect '/lists'
   end
 
-  list = find_list(list_id)
   list[:todos].delete_if { |todo| todo[:id] == todo_id }
   session[:success] = SUCCESS_DELETED_TODO
   redirect "/lists/#{list_id}"
