@@ -17,7 +17,7 @@
     <li class="<%= (list[:todos].empty? || !all_todos_completed?(list)) ? '' : 'complete' %>">
 
       <a>
-        <h2> <a href="/lists/<%= list[:id].to_s %>"><%= list[:name] %></a></h2>
+        <h2> <a href="/lists/<%= list[:id] %>"><%= list[:name] %></a></h2>
         <% if list[:todos].empty? %>
           <p><%= '0' %></p>
         <% elsif all_todos_completed?(list) %>
