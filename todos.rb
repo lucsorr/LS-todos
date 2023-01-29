@@ -24,6 +24,8 @@ configure do
   # to maintain session state. In other words, the symmetric key for
   # a symmetric encryption model of communication.
   set :session_secret, SESSION_SECRET
+
+  set :erb, :escape_html => true
 end
 
 before do

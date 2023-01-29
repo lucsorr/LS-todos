@@ -11,7 +11,7 @@
     <header>
       <a href="/"><h1>Todo Tracker</h1></a>
       <div class="actions">
-        <%= yield_content :main_header_links %>
+        <%== yield_content :main_header_links %>
       </div>
     </header>
       <% if session[:error] %>
@@ -24,7 +24,7 @@
         </div>
       <% end %>
     <main>
-      <%= yield %>
+      <%== yield %>
     </main>
   </body>
 </html>
