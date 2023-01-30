@@ -37,6 +37,8 @@ helpers do
   end
   
   def all_todos_completed?(list)
+    return false if list[:todos].empty?
+    
     list[:todos].all? { |todo| todo[:completed] }
   end
   
