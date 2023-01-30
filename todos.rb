@@ -46,10 +46,6 @@ helpers do
     list[:todos].count { |todo| todo[:completed] }
   end
 
-  def new_id(item)
-    item.empty? ? START_ID : (item.last[:id].to_i + 1).to_s
-  end
-
   def todos_stats(list)
     if list[:todos].empty? then '0'
     elsif all_todos_completed?(list) then "#{list[:todos].size}/#{list[:todos].size}"
